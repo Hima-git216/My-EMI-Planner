@@ -1,0 +1,46 @@
+Android .java Code
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+public class MainActivity extends AppCompatActivity {
+Button calEMI;
+TextView principal,downpay,rate,month,result;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ principal=findViewById(R.id.pa);
+ downpay=findViewById(R.id.dnp);
+ rate=findViewById(R.id.rt);
+ month=findViewById(R.id.term);
+ result=findViewById(R.id.res);
+ calEMI=findViewById(R.id.btcalemi);
+ calEMI.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View v) {
+ String st1 = principal.getText().toString();
+ String st2 = downpay.getText().toString();
+ String st3 = rate.getText().toString();
+String st4 = month.getText().toString();
+ float pr = Float.parseFloat(principal.getText().toString());
+ float dp = Float.parseFloat(downpay.getText().toString());
+ float interest = Float.parseFloat(rate.getText().toString());
+ int n = Integer.parseInt(month.getText().toString());
+ float p = pr-dp;
+ float r = interest/100;
+ float emi = calculateEMI(p,r,n);
+ result.setText(""+emi);
+ }
+ });
+ }
+ public float calculateEMI(float p, float r, int n) {
+ float k = p * r * ((power(r, n)) / ((power(r, n)) - 1));
+ return (float)(k);
+ }
+ public float power (float r, int n){
+ return (float)(Math.pow(1 + r, n));
+ }
+}
